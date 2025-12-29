@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Task Manager</title>
+    <link rel="stylesheet" href="/Css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <h1>📋 TaskFlow</h1>
+            <p class="subtitle">Organize your day, one task at a time</p>
+        </header>
+
+        <!-- Task Input Form -->
+        <section class="task-form-section">
+            <form id="task-form" class="task-form">
+                <div class="form-row">
+                    <div class="form-group form-group-title">
+                        <label for="task-title">Task Title</label>
+                        <input 
+                            type="text" 
+                            id="task-title" 
+                            placeholder="What needs to be done?" 
+                            required
+                            maxlength="100"
+                        >
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="task-priority">Priority</label>
+                        <select id="task-priority">
+                            <option value="low">🟢 Low</option>
+                            <option value="medium" selected>🟡 Medium</option>
+                            <option value="high">🔴 High</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="task-due-date">Due Date</label>
+                        <input type="date" id="task-due-date">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="task-category">Category</label>
+                        <select id="task-category">
+                            <option value="personal">👤 Personal</option>
+                            <option value="work">💼 Work</option>
+                            <option value="study">📚 Study</option>
+                            <option value="health">🏃 Health</option>
+                            <option value="other">📌 Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" id="submit-btn">
+                    <span class="btn-text">Add Task</span>
+                    <span class="btn-icon">+</span>
+                </button>
+            </form>
+        </section>
+
+        <!-- Statistics Section -->
+        <section class="stats-section">
+            <div class="stat-card">
+                <span class="stat-number" id="total-tasks">0</span>
+                <span class="stat-label">Total Tasks</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="completed-tasks">0</span>
+                <span class="stat-label">Completed</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="pending-tasks">0</span>
+                <span class="stat-label">Pending</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="overdue-tasks">0</span>
+                <span class="stat-label">Overdue</span>
+            </div>
+        </section>
+
+        <!-- Filter and Search Section -->
+        <section class="filter-section">
+            <div class="search-box">
+                <input 
+                    type="text" 
+                    id="search-input" 
+                    placeholder="🔍 Search tasks..."
+                >
+            </div>
+            
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="pending">Pending</button>
+                <button class="filter-btn" data-filter="completed">Completed</button>
+                <button class="filter-btn" data-filter="overdue">Overdue</button>
+            </div>
+            
+            <div class="sort-options">
+                <label for="sort-select">Sort by:</label>
+                <select id="sort-select">
+                    <option value="dateCreated">Date Created</option>
+                    <option value="dueDate">Due Date</option>
+                    <option value="priority">Priority</option>
+                    <option value="alphabetical">Alphabetical</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Task List Section -->
+        <section class="task-list-section">
+            <div id="task-list" class="task-list">
+                <!-- Tasks will be dynamically inserted here -->
+            </div>
+            
+            <!-- Empty State -->
+            <div id="empty-state" class="empty-state">
+                <div class="empty-icon">📝</div>
+                <h3>No tasks yet!</h3>
+                <p>Add your first task above to get started.</p>
+            </div>
+        </section>
+
+        <!-- Clear Actions -->
+        <section class="actions-section">
+            <button class="btn btn-secondary" id="clear-completed-btn">
+                Clear Completed
+            </button>
+            <button class="btn btn-danger" id="clear-all-btn">
+                Clear All Tasks
+            </button>
+        </section>
+    </div>
+
+    <!-- Edit Task Modal -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Task</h2>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <form id="edit-form" class="task-form">
+                <input type="hidden" id="edit-task-id">
+                
+                <div class="form-group">
+                    <label for="edit-task-title">Task Title</label>
+                    <input 
+                        type="text" 
+                        id="edit-task-title" 
+                        required
+                        maxlength="100"
+                    >
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-task-priority">Priority</label>
+                        <select id="edit-task-priority">
+                            <option value="low">🟢 Low</option>
+                            <option value="medium">🟡 Medium</option>
+                            <option value="high">🔴 High</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-task-due-date">Due Date</label>
+                        <input type="date" id="edit-task-due-date">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-task-category">Category</label>
+                        <select id="edit-task-category">
+                            <option value="personal">👤 Personal</option>
+                            <option value="work">💼 Work</option>
+                            <option value="study">📚 Study</option>
+                            <option value="health">🏃 Health</option>
+                            <option value="other">📌 Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancel-edit">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <span id="toast-message"></span>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="/Js/storage.js"></script>
+    <script src="/Js/taskmanager.js"></script>
+    <script src="/Js/app.js"></script>
+</body>
+</html>

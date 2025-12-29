@@ -1,0 +1,12 @@
+taskflow/
+├── index.html          # Main HTML structure
+
+
+├── css/
+│   └── styles.css      # Layout, themes, responsive design
+
+
+├── js/
+│   ├── app.js          # Main application logic, event listeners
+│   ├── taskManager.js  # Task class/object, CRUD functions
+│   └── storage.js      # LocalStorage read/write functions
